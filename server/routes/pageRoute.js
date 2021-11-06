@@ -29,6 +29,17 @@ router.get('/', (req,res)=>{
       return  res.status(500).json(error)
     })
 })
+// get single page 
+router.get('/link/:link', (req,res)=>{
+    Page.find({link : req.params.link})
+    .exec()
+    .then(result =>{
+        if (result.length >0) { return res.status(200).json(result)}
+        else return res.status(401).json({message : "page does not exist"})
+    })
+    .catch(error => {
+        return res.status(500).json(error)})
+})
 
 //update page
 //i can add form id later
