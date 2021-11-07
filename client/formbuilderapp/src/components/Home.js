@@ -1,11 +1,8 @@
 import React, { Component, createRef } from "react";
-import { Form, Input, Button, message } from "antd";
+import { Form, Input, Button, message, Tabs, Modal } from "antd";
 import $ from "jquery";
 
-import { Tabs } from "antd";
 import axios from "axios";
-// const ManageForms = require("./ManageForms");
-// const ManagePages = require("./ManagePages");
 
 const { TabPane } = Tabs;
 
@@ -15,24 +12,53 @@ window.$ = $;
 require("jquery-ui-sortable");
 require("formBuilder");
 
-const formData = [
-  {
-    type: "header",
-    subtype: "h1",
-    label: "formBuilder in React",
-  },
-  {
-    type: "paragraph",
-    label: "This is a demonstration of formBuilder running in a React project.",
-  },
-];
+const formData = [];
 
 export default class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isModalVisible: false,
+    };
+  }
   fb = createRef();
 
   componentDidMount() {
-    $(this.fb.current).formBuilder({ formData });
+    this.surveyCreator = $(this.fb.current).formBuilder({ formData });
   }
+  onOpenModal = () => {
+    const result = this.surveyCreator.actions.save();
+    result.length ? (this.setState({ isModalVisible: true })) : (message.error("empty fields"))
+   
+  };
+  onCloseModal =()=>{
+    this.setState({isModalVisible: false })
+  }
+  onCreateForm = (values) => {
+    const result = this.surveyCreator.actions.save();
+    console.log("result:", result);
+
+    console.log(values);
+    axios
+    .post("http://localhost:3001/form/", {
+      inputs : result ,
+      title: values.title,
+      
+    })
+    .then((response) => {
+      message.success("form  created with success");
+    })
+    .catch((error) => console.log(error));
+
+    message.success("form  created with success");
+    // const fbEditor = document.getElementById("fb-editor");
+    // const formBuilder = $(fbEditor).formBuilder();
+
+    this.setState({ isModalVisible: false });
+  };
+  onClearFormFields = () => {
+    this.surveyCreator.actions.clearFields();
+  };
 
   onCreatePage = (values) => {
     axios
@@ -48,12 +74,53 @@ export default class Home extends Component {
   };
 
   render() {
-    console.log(this.fb);
     return (
       <>
         <Tabs tabPosition="left">
           <TabPane tab="Manage forms" key="1">
-            <div id="fb-editor" ref={this.fb} />
+            <div>
+              <div id="fb-editor" ref={this.fb} />
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.onOpenModal();
+                }}
+              >
+                Create Form
+              </Button>
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.onClearFormFields();
+                }}
+              >
+                clear form
+              </Button>
+              <Modal
+                title="lets give it a name "
+                visible={this.state.isModalVisible}
+                onCancel={this.onCloseModal}
+                footer={null}
+              >
+                <Form name="formCreatePage" onFinish={this.onCreateForm}>
+                  <Form.Item
+                    name="title"
+                    label="name of form "
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input the form name ",
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    save form
+                  </Button>
+                </Form>
+              </Modal>
+            </div>
           </TabPane>
           <TabPane tab="Manage pages" key="2">
             <div>
