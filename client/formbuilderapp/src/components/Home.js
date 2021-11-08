@@ -43,20 +43,20 @@ export default class Home extends Component {
 
     // get list of forms
     axios
-    .get(`http://localhost:3001/form`)
-    .then((response) => {
-      console.log(response);
-      this.setState({ forms: response.data });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .get(`http://localhost:3001/form`)
+      .then((response) => {
+        console.log(response);
+        this.setState({ forms: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     // get list of pages
     axios
       .get(`http://localhost:3001/page`)
       .then((response) => {
         console.log(response);
-        this.setState({ pages : response.data });
+        this.setState({ pages: response.data });
       })
       .catch((error) => {
         console.log(error);
@@ -110,7 +110,29 @@ export default class Home extends Component {
   };
 
   onAssignForm = (values) => {
-    console.log(values);
+    
+    const pageid = values.page
+    const formid = values.form
+    axios.patch(`http://localhost:3001/page/`, { pageid , formid })
+      .then((response) => {
+        message.success('assign done')
+      })
+      .catch((error) => {
+        console.log({ error });
+      });
+
+      axios.patch(`http://localhost:3001/form/`, { pageid , formid })
+      .then((response) => {
+        
+      })
+      .catch((error) => {
+        console.log({ error });
+      });
+    // put _id of page in array in forms collection
+
+
+    // put _id of form in page 
+  
   };
 
   render() {
@@ -182,7 +204,7 @@ export default class Home extends Component {
                 labelCol={{ span: 4 }}
                 wrapperCol={{ span: 10 }}
               >
-                <h1>add a page </h1>
+                <h1>Create a page </h1>
 
                 <Form.Item
                   name="title"
@@ -248,56 +270,65 @@ export default class Home extends Component {
           {/*   ****************************** Assign form to page  ************************************ */}
 
           <TabPane tab="Assign form to page " key="3">
-          <h1>Assign Form to page </h1>
-          
-          {this.state.pages.length || this.state.forms.length ? (<h6> il ya des form et des page </h6> ) : ( <h6> pas encore de forms et des pages  </h6>)}
-           
-            <Form
-              name="assignRormToPage"
-              onFinish={this.onAssignForm}
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 10 }}
-            >
-             
+            <h1>Assign Form to page </h1>
 
-              <Form.Item
-                name="form"
-                label="Assign Form "
-                rules={[
-                  { required: true, message: "Please input the page title!" },
-                ]}
+            {this.state.pages.length || this.state.forms.length ? (
+              <Form
+                name="assignRormToPage"
+                onFinish={this.onAssignForm}
+                labelCol={{ span: 4 }}
+                wrapperCol={{ span: 10 }}
               >
-                <Select>
-                  <Select.Option value="demo">form 1</Select.Option>
-                  <Select.Option value="demo">form 2 </Select.Option>
-                  <Select.Option value="demo">form 3</Select.Option>
-                </Select>
-              </Form.Item>
+                <Form.Item
+                  name="form"
+                  label="Assign Form "
+                  rules={[
+                    { required: true, message: "Please input the page title!" },
+                  ]}
+                >
+                  <Select>
+                    {this.state.forms.map((form) => {
+                      return (
+                        <Select.Option value={form._id}>
+                          {" "}
+                          {form.title}{" "}
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
 
-              <Form.Item
-                name="page"
-                label="To page "
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input the page description!",
-                  },
-                ]}
-              >
-                <Select>
-                  <Select.Option value="demo">page 1 </Select.Option>
-                  <Select.Option value="demo">page 2</Select.Option>
-                  <Select.Option value="demo">page 3</Select.Option>
-                </Select>
-              </Form.Item>
+                <Form.Item
+                  name="page"
+                  label="To page "
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input the page description!",
+                    },
+                  ]}
+                >
+                  <Select>
+                    {this.state.pages.map((page) => {
+                      return (
+                        <Select.Option value={page._id}>
+                          {" "}
+                          {page.title}{" "}
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
 
-              <Form.Item wrapperCol={{ offset: 4, span: 10 }}>
-                <Button type="primary" htmlType="submit">
-                  Assign
-                </Button>
-              </Form.Item>
-            </Form>
-
+                <Form.Item wrapperCol={{ offset: 4, span: 10 }}>
+                  <Button type="primary" htmlType="submit">
+                    Assign
+                  </Button>
+                </Form.Item>
+              </Form>
+            ) : (
+              <h6> pas encore de forms et des pages </h6>
+            )}
           </TabPane>
         </Tabs>
       </div>

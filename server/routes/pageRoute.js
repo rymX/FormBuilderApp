@@ -42,7 +42,18 @@ router.get('/link/:link', (req,res)=>{
 })
 
 //update page
-//i can add form id later
+router.patch("/",(req,res)=>{
+    Page.findByIdAndUpdate(req.body.pageid , {
+        form : req.body.formid
+    })
+    .exec()
+    .then((result) => {
+      return res.status(200).json(result);
+    })
+    .catch((error) => {
+      return res.status(500).json(error);
+    });
+})
 
 //Assign form to pages
 

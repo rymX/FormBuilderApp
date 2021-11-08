@@ -43,8 +43,25 @@ router.get('/', (req,res)=>{
 })
 
 //update form
-//i can update the array of pages later
 
-// delete form 
+router.patch("/",(req,res)=>{
+  Form.findByIdAndUpdate(req.body.formid, {
+   $push: {page : req.body.pageid}
+  })
+  .exec()
+  .then((result) =>{
+    return res.status(200).json(result);
+  })
+  .catch((error)=>{
+    return res.status(500).json(error)
+  })
+})
+
+
+
+
+
+
+
 
 module.exports = router ;
