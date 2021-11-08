@@ -5,8 +5,7 @@ const Schema = mongoose.Schema;
 const formSchema = new Schema({
   inputs: [
     {
-      key: String,
-      name: String,
+      
     }
   ],
   title: String,
