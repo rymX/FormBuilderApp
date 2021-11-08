@@ -1,19 +1,20 @@
 import React, { Component, createRef } from "react";
 import { Form, Input, Button, message, Tabs, Modal, Select } from "antd";
 import "./home.css";
-import $ from "jquery";
+
+import $ from "jquery"; // Load jquery
 
 import axios from "axios";
 
 const { TabPane } = Tabs;
 
-window.jQuery = $;
-window.$ = $;
+window.jQuery = $; // jquery alias 
+window.$ = $; // jquery alias 
 
-require("jquery-ui-sortable");
-require("formBuilder");
+require("jquery-ui-sortable"); // formbuilder drag and drop
+require("formBuilder"); // formbuilder
 
-const formData = [];
+
 
 export default class Home extends Component {
   constructor(props) {
@@ -25,21 +26,19 @@ export default class Home extends Component {
     };
   }
   fb = createRef();
-
   options = {
     disableFields: [
-      "autocomplete",
-      "header",
-      "hidden",
-      "textarea",
-      "starRating",
-    ],
-    formData,
-    showActionButtons: false,
+        "autocomplete",
+        "header",
+        "hidden",
+        "textarea",
+        "starRating",
+      ],
+      showActionButtons: false,
+    dataType: 'xml' 
   };
   componentDidMount() {
     this.surveyCreator = $(this.fb.current).formBuilder(this.options);
-    console.log(this.surveyCreator);
 
     // get list of forms
     axios
@@ -62,19 +61,18 @@ export default class Home extends Component {
         console.log(error);
       });
   }
+
   onOpenModal = () => {
-    const result = this.surveyCreator.actions.save();
-    result.length
-      ? this.setState({ isModalVisible: true })
-      : message.error("empty fields");
+    const result = this.surveyCreator.actions.getData('xml');
+    result == '<form-template xmlns="http://www.w3.org/1999/xhtml"><fields></fields></form-template>' ? (message.error("empty fields")): (this.setState({ isModalVisible: true }));  
   };
+
   onCloseModal = () => {
     this.setState({ isModalVisible: false });
   };
+  
   onCreateForm = (values) => {
-    const result = this.surveyCreator.actions.save();
-    console.log("result:", result);
-
+    const result = this.surveyCreator.actions.getData('xml');
     console.log(values);
     axios
       .post("http://localhost:3001/form/", {
@@ -84,11 +82,7 @@ export default class Home extends Component {
       .then((response) => {
         message.success("form  created with success");
       })
-      .catch((error) => console.log(error));
-
-    message.success("form  created with success");
-    // const fbEditor = document.getElementById("fb-editor");
-    // const formBuilder = $(fbEditor).formBuilder();
+      .catch((error) =>{});
 
     this.setState({ isModalVisible: false });
   };
@@ -106,7 +100,11 @@ export default class Home extends Component {
       .then((response) => {
         message.success("page  created with success");
       })
-      .catch((error) => console.log(error));
+      .catch((error) =>{
+        if (error.response.data.message === "link_unavailable") {
+          message.error("this link is already taken ");
+        }
+      });
   };
 
   onAssignForm = (values) => {
@@ -117,38 +115,25 @@ export default class Home extends Component {
       .then((response) => {
         message.success('assign done')
       })
-      .catch((error) => {
-        console.log({ error });
-      });
+      .catch();
 
       axios.patch(`http://localhost:3001/form/`, { pageid , formid })
-      .then((response) => {
-        
-      })
-      .catch((error) => {
-        console.log({ error });
-      });
-    // put _id of page in array in forms collection
-
-
-    // put _id of form in page 
-  
+      .then()
+      .catch();
   };
 
   render() {
     return (
       <div className="form-style">
         <Tabs tabPosition="left">
+
+
+ {/*   ******************************manage forms ************************************ */}
+
           <TabPane tab="Manage forms" key="1">
             <div className="form-style">
               <div id="fb-editor" ref={this.fb} />
-              <Form.Item
-                style={{
-                  display: "inline-block",
-                  width: "calc(50% - 8px)",
-                  margin: "8 8px",
-                }}
-              >
+              <Form.Item>
                 <Button
                   type="primary"
                   onClick={() => {
@@ -157,13 +142,15 @@ export default class Home extends Component {
                 >
                   Create Form
                 </Button>
+                </Form.Item>
+                <Form.Item>
                 <Button
                   type="primary"
                   onClick={() => {
                     this.onClearFormFields();
                   }}
                 >
-                  clear form
+                  Clear form
                 </Button>
               </Form.Item>
 
@@ -327,7 +314,7 @@ export default class Home extends Component {
                 </Form.Item>
               </Form>
             ) : (
-              <h6> pas encore de forms et des pages </h6>
+              <h6> no forms and pages yet </h6>
             )}
           </TabPane>
         </Tabs>
