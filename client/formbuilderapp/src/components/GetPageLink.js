@@ -11,6 +11,8 @@ export default function GetPageLink() {
   const navigate = useNavigate();
 
   useEffect(() => {
+  console.log(params.link)
+  
     axios
       .get(`http://localhost:3001/page/link/${params.link}`)
       .then()

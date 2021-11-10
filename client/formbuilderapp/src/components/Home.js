@@ -8,13 +8,11 @@ import axios from "axios";
 
 const { TabPane } = Tabs;
 
-window.jQuery = $; // jquery alias 
-window.$ = $; // jquery alias 
+window.jQuery = $; // jquery alias
+window.$ = $; // jquery alias
 
 require("jquery-ui-sortable"); // formbuilder drag and drop
 require("formBuilder"); // formbuilder
-
-
 
 export default class Home extends Component {
   constructor(props) {
@@ -28,19 +26,18 @@ export default class Home extends Component {
   fb = createRef();
   options = {
     disableFields: [
-        "autocomplete",
-        "header",
-        "hidden",
-        "textarea",
-        "starRating",
-      ],
-      showActionButtons: false,
-    dataType: 'xml' 
+      "autocomplete",
+      "header",
+      "hidden",
+      "textarea",
+      "starRating",
+    ],
+    showActionButtons: false,
+    dataType: "xml",
   };
-  componentDidMount() {
-    this.surveyCreator = $(this.fb.current).formBuilder(this.options);
-
+  getFormsAndPages() {
     // get list of forms
+
     axios
       .get(`http://localhost:3001/form`)
       .then((response) => {
@@ -51,6 +48,7 @@ export default class Home extends Component {
         console.log(error);
       });
     // get list of pages
+
     axios
       .get(`http://localhost:3001/page`)
       .then((response) => {
@@ -61,18 +59,25 @@ export default class Home extends Component {
         console.log(error);
       });
   }
+  componentDidMount() {
+    this.surveyCreator = $(this.fb.current).formBuilder(this.options);
+    this.getFormsAndPages();
+  }
 
   onOpenModal = () => {
-    const result = this.surveyCreator.actions.getData('xml');
-    result == '<form-template xmlns="http://www.w3.org/1999/xhtml"><fields></fields></form-template>' ? (message.error("empty fields")): (this.setState({ isModalVisible: true }));  
+    const result = this.surveyCreator.actions.getData("xml");
+    result ==
+    '<form-template xmlns="http://www.w3.org/1999/xhtml"><fields></fields></form-template>'
+      ? message.error("empty fields")
+      : this.setState({ isModalVisible: true });
   };
 
   onCloseModal = () => {
     this.setState({ isModalVisible: false });
   };
-  
+
   onCreateForm = (values) => {
-    const result = this.surveyCreator.actions.getData('xml');
+    const result = this.surveyCreator.actions.getData("xml");
     console.log(values);
     axios
       .post("http://localhost:3001/form/", {
@@ -81,10 +86,12 @@ export default class Home extends Component {
       })
       .then((response) => {
         message.success("form  created with success");
+        this. getFormsAndPages();
       })
-      .catch((error) =>{});
-
-    this.setState({ isModalVisible: false });
+      .catch((error) => {
+        
+      });
+      this.setState({ isModalVisible: false });
   };
   onClearFormFields = () => {
     this.surveyCreator.actions.clearFields();
@@ -95,12 +102,13 @@ export default class Home extends Component {
       .post("http://localhost:3001/page/", {
         title: values.title,
         description: values.description,
-        link: values.link,
+        link:  values.link,
       })
       .then((response) => {
         message.success("page  created with success");
+        this. getFormsAndPages();
       })
-      .catch((error) =>{
+      .catch((error) => {
         if (error.response.data.message === "link_unavailable") {
           message.error("this link is already taken ");
         }
@@ -108,16 +116,17 @@ export default class Home extends Component {
   };
 
   onAssignForm = (values) => {
-    
-    const pageid = values.page
-    const formid = values.form
-    axios.patch(`http://localhost:3001/page/`, { pageid , formid })
+    const pageid = values.page;
+    const formid = values.form;
+    axios
+      .patch(`http://localhost:3001/page/`, { pageid, formid })
       .then((response) => {
-        message.success('assign done')
+        message.success("assign done");
       })
       .catch();
 
-      axios.patch(`http://localhost:3001/form/`, { pageid , formid })
+    axios
+      .patch(`http://localhost:3001/form/`, { pageid, formid })
       .then()
       .catch();
   };
@@ -126,9 +135,7 @@ export default class Home extends Component {
     return (
       <div className="form-style">
         <Tabs tabPosition="left">
-
-
- {/*   ******************************manage forms ************************************ */}
+          {/*   ******************************manage forms ************************************ */}
 
           <TabPane tab="Manage forms" key="1">
             <div className="form-style">
@@ -142,8 +149,8 @@ export default class Home extends Component {
                 >
                   Create Form
                 </Button>
-                </Form.Item>
-                <Form.Item>
+              </Form.Item>
+              <Form.Item>
                 <Button
                   type="primary"
                   onClick={() => {

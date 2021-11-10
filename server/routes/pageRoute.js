@@ -10,6 +10,7 @@ router.post("/", (req, res) => {
       if (rows.length >= 1) {
         return res.status(409).json({ message: "link_unavailable" });
       } else {
+       
         const page = new Page({
           title: req.body.title,
           link: req.body.link,
@@ -43,6 +44,7 @@ router.get("/", (req, res) => {
 });
 // get single page
 router.get("/link/:link", (req, res) => {
+  
   Page.find({ link: req.params.link })
     .exec()
     .then((result) => {

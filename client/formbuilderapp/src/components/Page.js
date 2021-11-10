@@ -74,8 +74,8 @@ export default class Page extends Component {
   };
 
   componentDidMount() {
-    this.getPagedetail(this.props.link);
-
+    //this.getPagedetail(this.props.link);
+console.log(this.props.params);
     this.surveyCreator = $(this.fb.current).formBuilder(this.state.options);
   }
 
