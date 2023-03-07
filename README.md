@@ -17,27 +17,27 @@ This application contain the following screens
 3. Add Wishlist modal
 4. List of products
 5. Add product
-● Sign In / Sign Up
+* ● Sign In / Sign Up
 This is the first screen where the user can go through a set process of authentication.
-● List of Wishilist
+* ● List of Wishilist
 Through the wishlists’ screen our user opens “add wishlist modal” and can view the content of
 each wishlist.
 Note that users can switch the view layout between list and grid.
-● Add Wishlist modal
+* ● Add Wishlist modal
 A modal to add a wishlist with a Name field.
-● List of products
+* ● List of products
 A list of products. You can see each product information: Image, Name, Descriptions,
 Status(Bought, To Buy), wishlist (the wishlist assigned to it).
 Note that you can switch the wishlist layout between Grid and List views
-● Add product
+* ● Add product
 Add product screen will contain the form to add or edit the information of a specific product.
 Note:
 The topbar contains a currency select that makes the user able to switch currency between
 TND, USD, EURO. The change of the currency will result in the conversion of the prices.
 
-Front-end
+* Front-end
 The front-end app written in Reactjs.
-Backend
+* Backend
 The back-end app written in Nodejs.
 
 you can find me on
