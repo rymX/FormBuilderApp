@@ -17,7 +17,7 @@ This application contain the following screens
 3. Add Wishlist modal
 4. List of products
 5. Add product
-<p  data-sourcepos="9:1-9:171" dir="auto"><a target="_blank" rel="noopener noreferrer" href=""><img src="https://github.com/rymX/FormBuilderApp/tree/develope/client/formbuilderapp/public/assets" style="max-width: 100%;"></a></p>
+<p  data-sourcepos="9:1-9:171" dir="auto"><a target="_blank" rel="noopener noreferrer" href=""><img src="https://github.com/rymX/FormBuilderApp/tree/develope/client/formbuilderapp/public/assets/create-form.png" style="max-width: 100%;"></a></p>
 * ● Sign In / Sign Up
 This is the first screen where the user can go through a set process of authentication.
 * ● List of Wishilist
