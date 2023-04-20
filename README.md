@@ -17,7 +17,7 @@ This application contain the following screens
 3. Add Wishlist modal
 4. List of products
 5. Add product
-<p  data-sourcepos="9:1-9:171" dir="auto"><a target="_blank" rel="noopener noreferrer" href=""><img src="https://github.com/rymX/FormBuilderApp/blob/develope/client/formbuilderapp/public/assets/create-form.png" style="max-width: 60%; align=center "></a></p>
+<p  data-sourcepos="9:1-9:171" dir="auto"><a target="_blank" rel="noopener noreferrer" href=""><img src="https://github.com/rymX/FormBuilderApp/blob/develope/client/formbuilderapp/public/assets/create-form.png" style="max-width: 40%; align=center "></a></p>
 <p  data-sourcepos="9:1-9:171" dir="auto"><a target="_blank" rel="noopener noreferrer" href=""><img src="https://github.com/rymX/FormBuilderApp/blob/develope/client/formbuilderapp/public/assets/manage-forms.png" style="max-width: 60%;"></a></p>
 <p  data-sourcepos="9:1-9:171" dir="auto"><a target="_blank" rel="noopener noreferrer" href=""><img src="https://github.com/rymX/FormBuilderApp/blob/develope/client/formbuilderapp/public/assets/edit-input.png" style="max-width: 60%;"></a></p>
 
